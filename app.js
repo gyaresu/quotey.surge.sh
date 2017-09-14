@@ -24,17 +24,23 @@
 //   }
 // }
 
-var el = document.querySelector('body')
-var p = document.createElement('p')
-
 function getQuote (type) {
+  var el = document.querySelector('body')
+  var qotd = document.createElement('p')
+  var life = document.createElement('p')
+
   if (type.qot === true) {
     fetch('http://quotes.rest/qod.json')
     .then(res => res.json())
     .then(data => {
       var clean = JSON.stringify(data.contents.quotes[0].quote)
-      p.textContent = clean // clean.contents.quotes[0].quote <- undefined
-      el.appendChild(p)
+      qotd.className = 'day-quote'
+      qotd.textContent = 'QOTD: ' + clean // clean.contents.quotes[0].quote <- undefined
+      if (document.querySelector('.day-quote')) {
+        el.replaceChild(qotd, document.querySelector('.day-quote'))
+      } else {
+        el.appendChild(qotd)
+      }
       // console.log(clean.contents.quotes[0].quote)
     })
   } else if (type.category === 'life') {
@@ -42,9 +48,13 @@ function getQuote (type) {
     .then(res => res.json())
     .then(data => {
       var clean = JSON.stringify(data.contents.quotes[0].quote)
-      p.textContent = clean // clean.contents.quotes[0].quote <- undefined
-      el.appendChild(p)
-      // console.log(clean.contents.quotes[0].quote)
+      life.className = 'life-quote'
+      life.textContent = 'Life Quote: ' + clean // clean.contents.quotes[0].quote <- undefined
+      if (document.querySelector('.life-quote')) {
+        el.replaceChild(life, document.querySelector('.life-quote'))
+      } else {
+        el.appendChild(life)
+      }
     })
   }
 }
